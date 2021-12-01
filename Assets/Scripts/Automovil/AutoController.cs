@@ -15,41 +15,40 @@ public class AutoController : MonoBehaviour
         TraccionCompleta
     }
     
+    public int metaa=0;
+    
     
     public  static float steervalue = 0.5f;
-
     public Text texto;
     [SerializeField] private TipoDeAuto _tipoDeAuto;
-    [SerializeField] private  List<Llanta> Ruedas = new List<Llanta>(4); //serializar para poder usar en el "Inspector"
-    //[SerializeField] public WheelCollider[] wheels = new WheelCollider[4];
-    //public GameObject[] wheelMesh = new GameObject[4];
+    [SerializeField] private  List<Llanta> Ruedas = new List<Llanta>(4);                //serializar para poder usar en el "Inspector"
+ 
     
     public int motorTorque = 100;
     public float steerAngle = 4;
     public float brakeValue = 9000;
 
     private InputManager _inputManager;
+    public GameObject CenterMass;
     private Rigidbody _rb;
     public float velocidad;
     public float KPH;
     public float FuerzaHaciaAbajo = 250.0f;
     public float radioAckearman = 6.0f;   //  Ackerman
 
-    public GameObject CenterMass;
-
-    [Header("Friccion")] //public float algo;
+    [Header("Friccion")] 
     public float SegundosPasarDifrt = 0.7f;
     public float[] _deslizar = new float[4];
     private float driftFactor;
-    public float handBrakeFrictionMultiplier = 2f;  // fuerza de drift del auto
+    public float handBrakeFrictionMultiplier = 2f;                          // fuerza de drift del auto
     private WheelFrictionCurve  forwardFriction,sidewaysFriction;
-    [HideInInspector] public bool playPauseSmoke = false;       //para Humo
+    [HideInInspector] public bool playPauseSmoke = false;                   //para Humo
 
     
     [Header("Engine")] public AnimationCurve Motor;
-    public float RPMruedas;         //wheelsRPM
+    public float RPMruedas;                                                 //wheelsRPM
     public float PoderTotalMotor;
-    public float motorRPM;          //engineRPM
+    public float motorRPM;                                                  //engineRPM
     private float smoothTime = 0.09f;
     public float MaxRPM = 5600.0f;
     public float MinRPM = 6000.0f;
@@ -168,6 +167,7 @@ public class AutoController : MonoBehaviour
         _rb.AddForce(-transform.up*(FuerzaHaciaAbajo*_rb.velocity.magnitude));
     }
 
+    
     private void ObtenerFriccion()
     {
         for (int i = 0; i < Ruedas.Count; ++i)
@@ -250,13 +250,15 @@ public class AutoController : MonoBehaviour
 	}
 
     
-    private IEnumerator timedLoop(){            // girar menos a velocidades altas
+    private IEnumerator timedLoop(){                            // girar menos a velocidades altas
         while(true){
             yield return new WaitForSeconds(.7f);
             radioAckearman = 6 + KPH / 20;
             
         }
     }
+    
+    
     
     //end drift
 
@@ -368,6 +370,17 @@ public class AutoController : MonoBehaviour
     {
         //cajaCambio();     //manual
         texto.text = velocidad.ToString();
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        //if (other.tag.CompareTo(waypoints))
+        if (other.tag == "meta")
+        {
+            //objetivo = other.GetComponent<waypoints>().siguiente;
+           // transform.LookAt(new Vector3(objetivo.position.x, transform.position.y, objetivo.position.z));
+            metaa += 1;
+        }
     }
     
 }

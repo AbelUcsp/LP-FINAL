@@ -51,6 +51,8 @@ public class Botones : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     // Update is called once per frame
     void Update()
     {
-        _inputManager._horizontal = Input.acceleration.x * AutoController.steervalue;
+        
+        //_inputManager._horizontal = _inputManager._horizontal * AutoController.steervalue;
+        //_inputManager._horizontal = Input.acceleration.x * AutoController.steervalue;
     }
 }
